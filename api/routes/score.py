@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, validator
+from typing import List
 from core.limiter import limiter
 from core.security import validate_goal, sanitize_name, validate_food_decisions
 from services.openai_service import calculate_score
@@ -8,30 +9,27 @@ router = APIRouter()
 
 
 class ScoreRequest(BaseModel):
-    food_decisions: list[str]
+    food_decisions: List[str]
     workout_done: bool
     diet_done: bool = False
     water_glasses: int = 0
     goal: str
     first_name: str = ""
 
-    @field_validator("goal")
-    @classmethod
-    def check_goal(cls, v: str) -> str:
+    @validator("goal")
+    def check_goal(cls, v):
         from core.security import ALLOWED_GOALS
         if v not in ALLOWED_GOALS:
             raise ValueError("Geçersiz hedef değeri")
         return v
 
-    @field_validator("first_name")
-    @classmethod
-    def clean_name(cls, v: str) -> str:
+    @validator("first_name")
+    def clean_name(cls, v):
         from core.security import sanitize_name
         return sanitize_name(v)
 
-    @field_validator("water_glasses")
-    @classmethod
-    def check_water(cls, v: int) -> int:
+    @validator("water_glasses")
+    def check_water(cls, v):
         return max(0, min(v, 30))
 
 

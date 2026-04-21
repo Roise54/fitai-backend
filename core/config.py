@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     allowed_origins: str = "*"
     firebase_web_api_key: str = ""
     firebase_service_account_path: str = "serviceAccount.json"
-    firebase_service_account_json: str = ""  # Cloud deployment için JSON string
+    firebase_service_account_json: str = ""
 
     class Config:
         env_file = ".env"
@@ -18,7 +18,7 @@ class Settings(BaseSettings):
             raise RuntimeError("Geçerli bir OPENAI_API_KEY tanımlı değil")
 
     @property
-    def origins_list(self) -> list[str]:
+    def origins_list(self) -> list:
         return [o.strip() for o in self.allowed_origins.split(",")]
 
 
