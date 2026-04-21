@@ -1,0 +1,14 @@
+.env
+serviceAccount.json
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+exercise_gif_cache.json
+
+.env.example
