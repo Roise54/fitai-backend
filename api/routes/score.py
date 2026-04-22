@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from typing import List
 from core.limiter import limiter
 from core.security import validate_goal, sanitize_name, validate_food_decisions
@@ -16,19 +16,21 @@ class ScoreRequest(BaseModel):
     goal: str
     first_name: str = ""
 
-    @validator("goal")
+    @field_validator("goal")
+    @classmethod
     def check_goal(cls, v):
         from core.security import ALLOWED_GOALS
         if v not in ALLOWED_GOALS:
             raise ValueError("Geçersiz hedef değeri")
         return v
 
-    @validator("first_name")
+    @field_validator("first_name")
+    @classmethod
     def clean_name(cls, v):
-        from core.security import sanitize_name
         return sanitize_name(v)
 
-    @validator("water_glasses")
+    @field_validator("water_glasses")
+    @classmethod
     def check_water(cls, v):
         return max(0, min(v, 30))
 

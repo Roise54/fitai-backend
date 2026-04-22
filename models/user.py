@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import List, Optional
+
 
 class UserProfile(BaseModel):
     age: int
@@ -7,6 +8,7 @@ class UserProfile(BaseModel):
     weight_kg: float
     gender: str
     goal: str
+
 
 class BodyAnalysisResult(BaseModel):
     fat_percentage: str
@@ -16,11 +18,13 @@ class BodyAnalysisResult(BaseModel):
     estimated_months: int
     first_actions: List[str]
 
+
 class FoodAnalysisResult(BaseModel):
     analysis: str
-    decision: str        # ye / azalt / değiştir / kaçın
-    impact: str          # düşük / orta / yüksek
+    decision: str
+    impact: str
     alternative: str
+
 
 class DailyScore(BaseModel):
     score: int

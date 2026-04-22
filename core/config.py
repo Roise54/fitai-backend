@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -9,8 +9,7 @@ class Settings(BaseSettings):
     firebase_service_account_path: str = "serviceAccount.json"
     firebase_service_account_json: str = ""
 
-    class Config:
-        env_file = ".env"
+    model_config = {"env_file": ".env"}
 
     def __init__(self, **data):
         super().__init__(**data)
