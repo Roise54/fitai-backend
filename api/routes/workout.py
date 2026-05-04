@@ -54,6 +54,6 @@ class WorkoutProfileRequest(BaseModel):
 
 @router.post("/generate")
 @limiter.limit("3/minute;10/hour")
-async def workout_generate(request: Request, profile: WorkoutProfileRequest):
+def workout_generate(request: Request, profile: WorkoutProfileRequest):
     validate_profile_numbers(profile.age, profile.height_cm, profile.weight_kg)
     return generate_workout_plan(profile.model_dump())

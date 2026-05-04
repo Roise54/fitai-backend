@@ -328,8 +328,8 @@ def generate_workout_plan(profile: dict) -> dict:
             {"role": "user", "content": user_prompt},
         ],
         response_format={"type": "json_object"},
-        max_tokens=4096,
-        timeout=60.0,
+        max_tokens=3000,
+        timeout=90.0,
     )
     try:
         return json.loads(response.choices[0].message.content)
