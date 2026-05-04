@@ -372,7 +372,7 @@ def generate_diet_plan(profile: dict) -> dict:
     system_prompt = (
         "Sen deneyimli bir diyetisyen ve beslenme uzmanısın. "
         "Bilimsel temelli, detaylı, kişiye özel 7 günlük diyet planları hazırlarsın. "
-        "Öğünler gerçekçi, pişirmesi kolay ve Türk damak zevkine uygundur. "
+        "Öğünler gerçekçi, pişirmesi kolay, ucuz ve Türk damak zevkine uygundur. "
         "JSON formatında yanıt verirsin."
     )
     user_prompt = (
@@ -381,25 +381,38 @@ def generate_diet_plan(profile: dict) -> dict:
         f"- Hedef: {goal_text}\n"
         f"- {goal_rules}\n\n"
         "Yukarıdaki profile göre 7 günlük kişiselleştirilmiş diyet planı oluştur.\n\n"
-        "Her öğün için şunları yaz:\n"
-        "- Spesifik yiyecek adları ve miktarları (ör: '2 yumurta haşlama, 2 dilim tam tahıllı ekmek, 1 dilim beyaz peynir (40g), domates-salatalık')\n"
-        "- Hazırlanması basit, Türkiye'de kolayca bulunabilen malzemeler\n"
+        "ZORUNLU: Türkiye'de herkesin kolayca bulabileceği, ucuz ve erişilebilir yemekler kullan.\n\n"
+        "Kullanabileceğin Türk mutfağı yemekleri (bunları çeşitli şekillerde kullan):\n"
+        "KAHVALTILAR: menemen (2 yumurta, domates, biber), sahanda yumurta, çılbır, beyaz peynir-zeytin-domates, "
+        "lor peyniri-bal, yulaf ezmesi (sütlü), tam buğday ekmek-yumurta, simit-peynir, gözleme (peynirli)\n"
+        "ÇORBALAR: mercimek çorbası, domates çorbası, yayla çorbası, ezogelin çorbası, tarhana çorbası, "
+        "şehriyeli tavuk çorbası, sebze çorbası\n"
+        "ANA YEMEKLER: kuru fasulye (evde pişmiş), mercimek yemeği, nohut yemeği, zeytinyağlı yeşil fasulye, "
+        "zeytinyağlı pırasa, imam bayıldı, kabak mücveri, ızgara köfte, fırın tavuk but, tavuk sote, "
+        "balık (hamsi/istavrit/sardalya — uygun fiyatlı), haşlama tavuk, kıymalı biber dolması, "
+        "bulgur pilavı, pirinç pilavı, makarna (tam buğday), patates yemeği\n"
+        "SALATALAR & MEZELER: çoban salatası, kısır, patlıcan salatası, cacık, haydari, "
+        "semizotu salatası, roka-domates salatası\n"
+        "ARA ÖĞÜNLER: muz, elma, portakal, yoğurt (sade), ayran, ceviz (5-6 adet), "
+        "leblebi (1 avuç), haşlanmış mısır, peynirli tam buğday ekmek\n\n"
+        "Her öğün için:\n"
+        "- Spesifik yiyecek adları ve miktarları yaz\n"
         "- 7 gün boyunca çeşitlilik olsun, aynı öğünleri tekrar etme\n"
         "- Tip alanına o gün için beslenmeye özgü pratik bir öneri yaz\n\n"
         'JSON formatında yanıt ver:\n'
         '{"days":['
         '{"day":"Pazartesi",'
-        '"breakfast":"2 haşlama yumurta, 2 dilim tam tahıllı ekmek, 40g beyaz peynir, söğüş domates-salatalık, yeşil çay",'
-        '"lunch":"Izgara tavuk göğsü (150g), bulgur pilavı (1 kase), mevsim salatası (zeytinyağlı-limonlu), cacık",'
-        '"dinner":"Fırın somon (150g), zeytinyağlı brokoli-havuç, 1 kase mercimek çorbası",'
-        '"snack":"1 avuç badem (20g) + 1 elma",'
-        '"tip":"Öğleden sonra acıkırsan önce 1 büyük bardak su iç, 10 dakika bekle."}'
+        '"breakfast":"Menemen (2 yumurta, 1 domates, 1 biber, az zeytinyağı), 2 dilim tam buğday ekmek, yeşil çay",'
+        '"lunch":"1 kase mercimek çorbası, kuru fasulye (1 porsiyon), bulgur pilavı (yarım kase), çoban salatası",'
+        '"dinner":"Izgara köfte (3 adet, 120g), zeytinyağlı yeşil fasulye (1 porsiyon), cacık",'
+        '"snack":"1 muz + 5-6 ceviz",'
+        '"tip":"Yemekten 30 dakika önce 1 büyük bardak su iç, öğünlerin arası en az 3 saat olsun."}'
         "]}\n\n"
         "Kurallar:\n"
         "- Kalori sayısı yazma, sadece yiyecek/miktar\n"
-        "- Her gün farklı protein kaynağı kullan (tavuk, kırmızı et, balık, yumurta, baklagil dönüşümlü)\n"
-        "- Türk mutfağının zenginliğini yansıt: çorba, zeytinyağlılar, ızgara, dolma, köfte vb.\n"
-        "- Miktar bilgisi ekle (gram, adet, kase, dilim)\n"
+        "- Her gün farklı protein kaynağı kullan (tavuk, kırmızı et, yumurta, baklagil, balık dönüşümlü)\n"
+        "- Pahalı veya zor bulunan malzemeler kullanma (quinoa, avokado, somon gibi)\n"
+        "- Miktar bilgisi ekle (gram, adet, kase, dilim, porsiyon)\n"
         "- Türkçe yaz"
     )
 
