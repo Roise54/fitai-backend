@@ -15,6 +15,7 @@ class ProfileRequest(BaseModel):
     weight_kg: float
     gender: str
     goal: str
+    days: int = 7
 
     @field_validator("goal")
     @classmethod

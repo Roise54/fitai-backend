@@ -368,10 +368,11 @@ def generate_diet_plan(profile: dict) -> dict:
     age = profile.get("age", 25)
     weight = profile.get("weight_kg", 75)
     height = profile.get("height_cm", 175)
+    days = max(1, min(7, int(profile.get("days", 7))))
 
     system_prompt = (
         "Sen deneyimli bir diyetisyen ve beslenme uzmanısın. "
-        "Bilimsel temelli, detaylı, kişiye özel 7 günlük diyet planları hazırlarsın. "
+        f"Bilimsel temelli, detaylı, kişiye özel {days} günlük diyet planları hazırlarsın. "
         "Öğünler gerçekçi, pişirmesi kolay, ucuz ve Türk damak zevkine uygundur. "
         "JSON formatında yanıt verirsin."
     )
@@ -380,7 +381,7 @@ def generate_diet_plan(profile: dict) -> dict:
         f"- Yaş: {age}, Boy: {height}cm, Kilo: {weight}kg, Cinsiyet: {gender}\n"
         f"- Hedef: {goal_text}\n"
         f"- {goal_rules}\n\n"
-        "Yukarıdaki profile göre 7 günlük kişiselleştirilmiş diyet planı oluştur.\n\n"
+        f"Yukarıdaki profile göre {days} günlük kişiselleştirilmiş diyet planı oluştur.\n\n"
         "ZORUNLU: Türkiye'de herkesin kolayca bulabileceği, ucuz ve erişilebilir yemekler kullan.\n\n"
         "Kullanabileceğin Türk mutfağı yemekleri (bunları çeşitli şekillerde kullan):\n"
         "KAHVALTILAR: menemen (2 yumurta, domates, biber), sahanda yumurta, çılbır, beyaz peynir-zeytin-domates, "
@@ -397,7 +398,7 @@ def generate_diet_plan(profile: dict) -> dict:
         "leblebi (1 avuç), haşlanmış mısır, peynirli tam buğday ekmek\n\n"
         "Her öğün için:\n"
         "- Spesifik yiyecek adları ve miktarları yaz\n"
-        "- 7 gün boyunca çeşitlilik olsun, aynı öğünleri tekrar etme\n"
+        f"- {days} gün boyunca çeşitlilik olsun, aynı öğünleri tekrar etme\n"
         "- Tip alanına o gün için beslenmeye özgü pratik bir öneri yaz\n\n"
         'JSON formatında yanıt ver:\n'
         '{"days":['
