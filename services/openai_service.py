@@ -234,10 +234,11 @@ _LOCATION_RULES = {
         "Egzersiz yeri: EV (ekipman yok).\n"
         "KURAL: Yalnızca vücut ağırlığıyla yapılabilen egzersizler kullan "
         "(şınav, squat, plank, burpee, lunges, mountain climber, jumping jack, "
-        "dip (sandalye), glute bridge, superman vb.). "
+        "dip (sandalye), glute bridge, superman, pike push-up, tricep dip, "
+        "reverse lunge, step-up (sandalye), donkey kick, hip thrust vb.). "
         "Hiçbir ağırlık aleti veya spor salonu ekipmanı ekleme."
     ),
-    "gym": "Egzersiz yeri: Spor salonu (tüm ekipmanlar ve ağırlıklar mevcut).",
+    "gym": "Egzersiz yeri: Spor salonu (barbell, dumbbell, cable, smith machine, leg press, tüm makineler mevcut).",
 }
 
 
@@ -245,7 +246,7 @@ _LEVEL_RULES = {
     "başlangıç": (
         "SEVİYE: Başlangıç.\n"
         "- Temel compound hareketlere odaklan (squat, deadlift, bench press, row, overhead press).\n"
-        "- Her kas grubu için 2 egzersiz yeterli. Teknik öğrenme öncelikli.\n"
+        "- Her kas grubu için 2-3 egzersiz. Teknik öğrenme öncelikli.\n"
         "- Set/rep: 3x10-12, dinlenme 60-90 sn.\n"
         "- Ağırlık seçimi: tekniği bozmadan tamamlanabilecek, son 2 tekrarda zorlanılan ağırlık.\n"
         "- Tempo orta, derin nefes tekniği vurgula.\n"
@@ -253,16 +254,16 @@ _LEVEL_RULES = {
     ),
     "orta": (
         "SEVİYE: Orta (6+ ay deneyim).\n"
-        "- Her kas grubu için 3 egzersiz uygula: 1 compound (ağır/düşük tekrar) + 1 compound (orta) + 1 izolasyon.\n"
+        "- Her kas grubu için 3-4 egzersiz: 1-2 compound (ağır) + 1 compound (orta) + 1-2 izolasyon.\n"
         "- Set/rep: compound için 4x6-8, izolasyon için 3x12-15.\n"
         "- Son sette tükenişe git (RIR 0-1).\n"
-        "- Progresif yük artışı vurgula: her haftada 2.5-5 kg artış hedefle.\n"
+        "- Progresif yük artışı zorunlu: haftada 2.5-5 kg artış hedefle.\n"
         "- Süperset ve piramit set tekniklerini kullanabilirsin.\n"
         "- Dinlenme: ağır compound 2-3 dk, izolasyon 60-90 sn."
     ),
     "ileri": (
         "SEVİYE: İleri (2+ yıl deneyim, kas-sinir koordinasyonu gelişmiş).\n"
-        "- Her kas grubu için 3-4 egzersiz. Compound + compound + izolasyon + bitirici izolasyon.\n"
+        "- Her kas grubu için 4-5 egzersiz. Compound + compound + izolasyon + bitirici izolasyon.\n"
         "- Yoğun teknikler zorunlu: son set tükenişe git, drop set, süperset, negatif tekrar, rest-pause.\n"
         "- Set/rep: compound 5x4-6 (ağır), aksesuar 4x8-10, izolasyon 3x12-15 tükenişe.\n"
         "- Periodizasyon: bazı günler güç odaklı (5x5), bazı günler hipertrofi (4x8-12).\n"
@@ -271,54 +272,122 @@ _LEVEL_RULES = {
     ),
 }
 
+_WORKOUT_GOAL_RULES = {
+    "lose_fat": (
+        "HEDEF ODAKLI KURAL (Yağ Yakma):\n"
+        "- Dinlenme kısa: 45-60 sn (metabolizmayı yüksek tutar)\n"
+        "- Süperset ve devre antrenmanı tercih et (compound + izolasyon arka arkaya)\n"
+        "- Her antrenman günü sonuna 10 dk HIIT finisher ekle\n"
+        "- RPE 7-8 hedef, nefes kesilecek kadar yoğun\n"
+        "- Total set sayısını artır, ağırlıktan çok tempo ve süreklilik önemli"
+    ),
+    "build_muscle": (
+        "HEDEF ODAKLI KURAL (Kas İnşası / Hipertrofi):\n"
+        "- Progressive overload ana prensip: her haftada ağırlık veya tekrar artışı\n"
+        "- Compound sonrası izolasyon zorunlu (kasın tam yorulması için)\n"
+        "- Yeterli dinlenme: compound 2-3 dk, izolasyon 60-90 sn\n"
+        "- RPE 8-9, son 2 sette tükenişe git\n"
+        "- Antrenman süresi 60-90 dk, total haftalık volüm yüksek tutulur"
+    ),
+    "recomp": (
+        "HEDEF ODAKLI KURAL (Vücut Dönüşümü — Yağ Yak + Kas Kazan):\n"
+        "- Karma: ağır compound + orta-yüksek tekrar izolasyon\n"
+        "- Dinlenme orta: 60-90 sn\n"
+        "- Progressive overload önemli ama volume da var\n"
+        "- Compound sonrası opsiyonel süperset\n"
+        "- RPE 7-9 arası, antrenman 50-75 dk"
+    ),
+}
+
+_SPLIT_MAP = {
+    2: ("Full Body", "Her antrenman günü tüm vücut kaslarını çalıştırır"),
+    3: ("Full Body", "Her antrenman günü tüm vücut kaslarını çalıştırır"),
+    4: ("Upper/Lower Split", "2 gün üst vücut (göğüs/sırt/omuz/kol), 2 gün alt vücut (quad/hamstring/kalça/baldır)"),
+    5: ("Push/Pull/Legs (PPL)", "İt (göğüs/omuz/tricep), çek (sırt/bicep), bacak (quad/hamstring/kalça/baldır)"),
+    6: ("Push/Pull/Legs (PPL) x2", "PPL döngüsü 2 kez tekrar edilir, 6 günde tam vücut yorgunluğu"),
+}
+
+
 def generate_workout_plan(profile: dict) -> dict:
-    goal_text = _GOAL_LABELS.get(profile["goal"], profile["goal"])
+    goal = profile["goal"]
+    goal_text = _GOAL_LABELS.get(goal, goal)
     name = profile.get("first_name", "")
     name_line = f"- İsim: {name}\n" if name else ""
     fitness_level = profile.get("fitness_level", "başlangıç")
     days_per_week = profile.get("days_per_week", 3)
     location = profile.get("workout_location", "gym")
+
+    # BMI hesabı
+    weight = profile.get("weight_kg", 75)
+    height_cm = profile.get("height_cm", 175)
+    age = profile.get("age", 25)
+    gender = profile.get("gender", "male")
+    bmi = round(weight / (height_cm / 100) ** 2, 1)
+    if bmi < 18.5:
+        bmi_cat = "zayıf"
+    elif bmi < 25:
+        bmi_cat = "normal kilolu"
+    elif bmi < 30:
+        bmi_cat = "fazla kilolu"
+    else:
+        bmi_cat = "obez"
+    bmi_note = f"VKİ: {bmi} ({bmi_cat})"
+
+    # Split tipi
+    split_type, split_desc = _SPLIT_MAP.get(days_per_week, _SPLIT_MAP[3])
+
     location_rule = _LOCATION_RULES.get(location, _LOCATION_RULES["gym"])
     level_rule = _LEVEL_RULES.get(fitness_level, _LEVEL_RULES["başlangıç"])
+    goal_rule = _WORKOUT_GOAL_RULES.get(goal, _WORKOUT_GOAL_RULES["recomp"])
 
     system_prompt = (
-        "Sen 10 yıllık deneyime sahip sertifikalı bir kişisel antrenörsün (NASM-CPT). "
-        "Bilimsel temelli, gerçekten sonuç veren antrenman programları yazarsın. "
-        "Jenerik programlar değil, kişiye özel, uygulanabilir ve zorlayıcı programlar üretirsin. "
-        "PT jargonunu doğal kullanırsın: RPE, RIR, drop set, süperset, progressive overload. "
+        "Sen 10 yıllık deneyime sahip sertifikalı bir kişisel antrenörsün (NASM-CPT, CSCS). "
+        "Sadece kişiye özel, bilimsel temelli, gerçekten sonuç veren programlar yazarsın. "
+        "Jenerik programlar değil — kişinin VKİ'sini, yaşını, cinsiyetini, hedefini ve seviyesini "
+        "göz önünde bulundurarak spesifik, uygulanabilir ve zorlayıcı programlar üretirsin. "
+        "PT terminolojisini doğal kullanırsın: RPE, RIR, TUT, drop set, süperset, progressive overload, periodizasyon. "
         "JSON formatında yanıt verirsin."
     )
+
     user_prompt = (
         f"Kullanıcı profili:\n{name_line}"
-        f"- Yaş: {profile['age']}, Boy: {profile['height_cm']}cm, Kilo: {profile['weight_kg']}kg\n"
-        f"- Cinsiyet: {profile['gender']}, Hedef: {goal_text}\n"
-        f"- {level_rule}\n"
-        f"- Haftada {days_per_week} antrenman günü (geri kalan günler dinlenme)\n"
-        f"- {location_rule}\n\n"
+        f"- Yaş: {age}, Boy: {height_cm}cm, Kilo: {weight}kg, Cinsiyet: {gender}\n"
+        f"- Hedef: {goal_text}\n"
+        f"- {bmi_note}\n"
+        f"- Haftada {days_per_week} antrenman günü\n"
+        f"- Önerilen split: {split_type} — {split_desc}\n\n"
+        f"{level_rule}\n\n"
+        f"{goal_rule}\n\n"
+        f"{location_rule}\n\n"
         "Bu profile uygun 7 günlük antrenman programı oluştur. "
-        "Antrenman günlerini haftaya dengeli yay. Aynı kas grubunu arka arkaya koyma.\n\n"
-        "JSON formatında yanıt ver:\n"
-        '{"days":['
-        '{"day":"Pazartesi","is_rest":false,"focus":"Göğüs & Triceps",'
-        '"duration":"60-75 dk","intensity":"yüksek",'
-        '"warmup":"5 dk hafif ip atlama + 10 tekrar boş bar bench press",'
+        f"Split tipine ({split_type}) sıkı uy. Antrenman günlerini haftaya dengeli yay. "
+        "Aynı kas grubuna arka arkaya gün KOYMA.\n\n"
+        "JSON formatında yanıt ver — ÜST SEVIYE alanlar:\n"
+        f'{{"split_type":"{split_type}","bmi_note":"{bmi_note}",'
+        f'"weekly_goal":"Bu haftanın odak noktası ve hedef (2 cümle, kişiye özel, motive edici)",'
+        '"days":['
+        '{"day":"Pazartesi","is_rest":false,"focus":"Push — Göğüs & Omuz & Triceps",'
+        '"duration":"70-80 dk","intensity":"yüksek","calorie_burn":"380-480 kcal",'
+        '"warmup":"5 dk hafif ip atlama + 10 tekrar boş bar bench press + omuz çevirmeler",'
         '"exercises":['
         '{"name":"Bench Press","sets":"4","reps":"6-8 — son set tükenişe git","rest":"2-3 dk",'
-        '"tip":"Kürek kemiklerini birbirine yaklaştır, sırtında kavis oluştur. Barı göğüs ortasına indir.",'
-        '"how_to":"Bankta sırt üstü uzan, kürek kemiklerini sık ve hafif kavis oluştur. Barı omuz genişliğinden biraz geniş tut. Nefes alarak barı kontrollü göğüs ortasına indir (2 sn), nefes vererek patlayıcı şekilde it. Son sette ağırlığı düşürme — tükenişe git."}'
+        '"tip":"Kürek kemiklerini birbirine yaklaştır, sırtında kavis oluştur.",'
+        '"how_to":"Bankta sırt üstü uzan, kürek kemiklerini sık ve hafif kavis oluştur. Barı omuz genişliğinden biraz geniş tut. Nefes alarak barı kontrollü göğüs ortasına indir (2 sn), nefes vererek patlayıcı şekilde it. Son sette ağırlığı düşürme."}'
         '],'
-        '"cooldown":"5 dk göğüs-triceps esneme + köpük rulo"},'
+        '"cooldown":"5 dk göğüs-omuz esneme + köpük rulo"},'
         '{"day":"Salı","is_rest":true,"focus":"Aktif Dinlenme","duration":"","intensity":"",'
-        '"warmup":"","exercises":[],"cooldown":""}'
+        '"calorie_burn":"","warmup":"","exercises":[],"cooldown":""}'
         ']}\n\n'
-        "Kurallar:\n"
-        f"- Seviye kurallarına SIKI uy: {fitness_level} için belirtilen egzersiz sayısı, set/rep ve teknikler zorunlu\n"
-        "- Hedef: kas hipertrofisi için ağırlık+izolasyon dengesi, yağ yakma için süper set ve kısa dinlenme tercih et\n"
-        "- 'sets' ve 'reps' alanlarında detaylı not ekle: '4x8-10 — son set drop set' gibi\n"
-        "- 'tip' alanı kısa ama kritik teknik noktayı vurgulasın (1-2 cümle)\n"
-        "- 'how_to' alanına tam teknik açıklama yaz: nefes, kas aktivasyonu, hata önleme (3-4 cümle)\n"
-        "- Warmup ve cooldown spesifik ve antrenmanla ilgili olsun\n"
-        "- Türkçe yaz, PT terminolojisini (drop set, süperset, RPE, progressive overload vb.) doğal kullan"
+        "Zorunlu kurallar:\n"
+        f"- Seviye ({fitness_level}) için egzersiz sayısı, set/rep, teknikler SIKI uygulanacak\n"
+        f"- Split tipine ({split_type}) göre her günün odağı net ve ayrı olsun\n"
+        "- 'sets' ve 'reps' alanına detaylı not ekle: '4x8-10 — son set drop set' gibi\n"
+        "- 'tip': 1-2 cümle kritik teknik nokta\n"
+        "- 'how_to': nefes + kas aktivasyonu + hata önleme (3-4 cümle, tam teknik)\n"
+        "- 'calorie_burn': o günün tahmini kalori yakımı (ör: '320-400 kcal')\n"
+        "- 'weekly_goal': kişinin fiziksel özelliklerine ve hedefine göre bu haftanın amacını yaz\n"
+        "- Warmup ve cooldown o günün odak kaslarına spesifik olsun\n"
+        "- Türkçe yaz, PT terminolojisini doğal kullan"
     )
 
     response = client.chat.completions.create(
@@ -328,7 +397,7 @@ def generate_workout_plan(profile: dict) -> dict:
             {"role": "user", "content": user_prompt},
         ],
         response_format={"type": "json_object"},
-        max_tokens=3000,
+        max_tokens=4000,
         timeout=90.0,
     )
     try:
