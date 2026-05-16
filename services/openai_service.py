@@ -245,12 +245,13 @@ _LOCATION_RULES = {
 _LEVEL_RULES = {
     "başlangıç": (
         "SEVİYE: Başlangıç.\n"
-        "- Temel compound hareketlere odaklan (squat, deadlift, bench press, row, overhead press).\n"
-        "- Her kas grubu için 2-3 egzersiz. Teknik öğrenme öncelikli.\n"
+        "- Program tipi: FULL BODY — her antrenman günü tüm vücudu dengeli çalıştır.\n"
+        "- Her antrenman günü 8-10 egzersiz: Bacak/Quad (2), Hamstring/Kalça (2), Göğüs (2), Sırt (2), Omuz (1), Bicep (1), Tricep (1).\n"
+        "- Temel compound hareketlere odaklan (squat, deadlift, bench press, row, overhead press, lunge, hip thrust).\n"
         "- Set/rep: 3x10-12, dinlenme 60-90 sn.\n"
         "- Ağırlık seçimi: tekniği bozmadan tamamlanabilecek, son 2 tekrarda zorlanılan ağırlık.\n"
-        "- Tempo orta, derin nefes tekniği vurgula.\n"
-        "- 'Son sete kadar git' veya 'drop set' gibi ileri teknikler kullanma."
+        "- Tempo orta, nefes tekniği ve kas aktivasyonunu vurgula.\n"
+        "- Drop set, süperset veya 'tükenişe git' teknikleri KULLANMA."
     ),
     "orta": (
         "SEVİYE: Orta (6+ ay deneyim).\n"
@@ -263,7 +264,9 @@ _LEVEL_RULES = {
     ),
     "ileri": (
         "SEVİYE: İleri (2+ yıl deneyim, kas-sinir koordinasyonu gelişmiş).\n"
-        "- Her kas grubu için 4-5 egzersiz. Compound + compound + izolasyon + bitirici izolasyon.\n"
+        "- Her vücut bölgesi (kas grubu) için MİNİMUM 3 egzersiz — büyük gruplar (göğüs/sırt/bacak) için 4-5 egzersiz zorunlu.\n"
+        "- Egzersiz sırası: Compound ağır → Compound orta → İzolasyon → Bitirici izolasyon.\n"
+        "- Örnek: Göğüs günü → Bench Press + İncline Dumbbell Press + Kablo Fly + Dip + Pec Deck (5 egzersiz).\n"
         "- Yoğun teknikler zorunlu: son set tükenişe git, drop set, süperset, negatif tekrar, rest-pause.\n"
         "- Set/rep: compound 5x4-6 (ağır), aksesuar 4x8-10, izolasyon 3x12-15 tükenişe.\n"
         "- Periodizasyon: bazı günler güç odaklı (5x5), bazı günler hipertrofi (4x8-12).\n"
@@ -333,8 +336,12 @@ def generate_workout_plan(profile: dict) -> dict:
         bmi_cat = "obez"
     bmi_note = f"VKİ: {bmi} ({bmi_cat})"
 
-    # Split tipi
-    split_type, split_desc = _SPLIT_MAP.get(days_per_week, _SPLIT_MAP[3])
+    # Split tipi — başlangıç her zaman Full Body
+    if fitness_level == "başlangıç":
+        split_type = "Full Body"
+        split_desc = "Her antrenman günü tüm vücut kaslarını dengeli çalıştırır"
+    else:
+        split_type, split_desc = _SPLIT_MAP.get(days_per_week, _SPLIT_MAP[3])
 
     location_rule = _LOCATION_RULES.get(location, _LOCATION_RULES["gym"])
     level_rule = _LEVEL_RULES.get(fitness_level, _LEVEL_RULES["başlangıç"])
@@ -381,6 +388,8 @@ def generate_workout_plan(profile: dict) -> dict:
         "Zorunlu kurallar:\n"
         f"- Seviye ({fitness_level}) için egzersiz sayısı, set/rep, teknikler SIKI uygulanacak\n"
         f"- Split tipine ({split_type}) göre her günün odağı net ve ayrı olsun\n"
+        + ("- Her antrenman günü tüm vücut kaslarını kapsayan 8-10 egzersiz yaz (bacak, göğüs, sırt, omuz, kol)\n" if fitness_level == "başlangıç" else "- Her vücut bölgesi için minimum 3 egzersiz — büyük kaslar (göğüs/sırt/bacak) için 4-5 egzersiz zorunlu\n")
+        +
         "- 'sets' ve 'reps' alanına detaylı not ekle: '4x8-10 — son set drop set' gibi\n"
         "- 'tip': 1-2 cümle kritik teknik nokta\n"
         "- 'how_to': nefes + kas aktivasyonu + hata önleme (3-4 cümle, tam teknik)\n"
@@ -397,7 +406,7 @@ def generate_workout_plan(profile: dict) -> dict:
             {"role": "user", "content": user_prompt},
         ],
         response_format={"type": "json_object"},
-        max_tokens=4000,
+        max_tokens=6000,
         timeout=90.0,
     )
     try:
