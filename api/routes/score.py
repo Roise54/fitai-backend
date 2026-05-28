@@ -37,7 +37,7 @@ class ScoreRequest(BaseModel):
 
 @router.post("/daily")
 @limiter.limit("10/minute;30/hour")
-async def daily_score(request: Request, req: ScoreRequest):
+def daily_score(request: Request, req: ScoreRequest):
     safe_decisions = validate_food_decisions(req.food_decisions)
     return calculate_score(
         safe_decisions,

@@ -8,6 +8,6 @@ router = APIRouter()
 
 @router.get("/daily")
 @limiter.limit("5/minute;20/hour")
-async def daily_quote(request: Request, goal: str = "lose_fat", first_name: str = ""):
+def daily_quote(request: Request, goal: str = "lose_fat", first_name: str = ""):
     validate_goal(goal)
     return {"quote": generate_daily_quote(goal, sanitize_name(first_name))}
